@@ -1,0 +1,12 @@
+flowchart LR
+  subgraph DockerNetwork[Docker network: mon-net]
+    node[Node Exporter\n:9100]
+    prom[Prometheus\n:9090\nscrape node:9100]
+    graf[Grafana\n:3000\ndatasource http://prom:9090]
+    prom -->|scrapes /metrics| node
+    graf -->|queries PromQL| prom
+  end
+
+  user[You / Browser]
+  user -->|http://localhost:9090| prom
+  user -->|http://localhost:3000| graf
